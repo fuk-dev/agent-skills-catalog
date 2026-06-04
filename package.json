@@ -5,9 +5,5 @@
   "private": false,
   "files": [
     "catalog"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/xsjd2019/agent-skills-catalog.git"
-  }
+  ]
 }
