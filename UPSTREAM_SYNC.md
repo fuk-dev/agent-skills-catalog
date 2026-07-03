@@ -2,6 +2,8 @@
 
 各 skill は外部 upstream の skill ファイル群を fork して、AI エージェント (Managed Agent) 用に汎用化したものを収録している。upstream に新版が出たら、ここに書いた手順で取り込む。
 
+> **⚡ 前提ドキュメント**: fork するときに **何を削って何を残すか** の判定原則は [`GENERALIZATION_GUIDE.md`](./GENERALIZATION_GUIDE.md) に集約している。skill 別の削除ルール (下記 rule B/C) は本 guide の適用結果であり、新しい記述が upstream に入ってきたときは **まず guide の削除必須パターンを sweep** してから rule を更新する。
+
 ---
 
 ## `content-production`
@@ -69,12 +71,24 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 
 #### C. 維持する (= upstream と一致させる)
 
-- `references/*` の共通 4 本 (`image-sourcing-framework.md` / `seo-content-strategy.md` / `writing-process.md` / `industry-presets.md`): 基本 upstream と一致。ただし `industry-presets.md` 冒頭の canonical 14 業種テーブル追加部から `astro-base-theme` sibling ref は削除
+- `references/seo-content-strategy.md`: 完全一致
 - `references/non-commodity-content-standard.md`: Phase3 採用、upstream からそのままコピー
 - `templates/` の共通 4 本 (`page-copy-templates.md` / `seo-article-templates.md` / `ai-image-prompt-library.md` / `seo-annual-balance-sheet.md`): 完全一致
 - `templates/claim-register.template.md` / `content-qa-checklist.template.md` (Phase3 採用): upstream からそのままコピー
-- 業種プリセット (`references/industry-presets.md`) は upstream の canonical 14 業種 + multifaceted に統一
+- 業種プリセット (`references/industry-presets.md`) は upstream の canonical 14 業種 + multifaceted に統一 (ただし sibling ref は D で削除)
 - SKILL.md の `## バージョン履歴` セクション: upstream の歴史的記録として残す (削除された CP-3/CP-4 に対しては fork 側で除外した旨を注記)
+
+#### D. references/ の agent-safe 化 (2026-07-03 追加)
+
+`GENERALIZATION_GUIDE.md` の削除必須パターンに従い、references/ にも削り込みを適用する:
+
+| ファイル | 対処 | 理由 |
+|---|---|---|
+| `references/image-sourcing-framework.md` | **全面書き換え** (元 445L → 326L) | Unsplash / iStock / Pexels / 写真AC / Pixta を含む買取素材節、カメラマン手配を含む新規撮影節、Dropbox 受け取り workflow、コスト感節を削除し、2 手段 (実行環境のメディアライブラリ / AI 生成) に集約。AI 生成側のツール名 (Midjourney / DALL-E / Firefly / Leonardo) は保持 (craft 知識、実際の tool 実行は system 側の tool が担当)。事故 #330 の再発防止 |
+| `references/industry-presets.md` | line 486 の `site-diagnosis 多角化型プリセットの法令クロスチェック表を参照` を汎用化 | sibling skill 参照 |
+| `references/writing-process.md` | line 38 / 53 の `client-intake の成果物` を `ユーザーの依頼内容` に置換 | sibling skill 参照 |
+
+**判定基準**: 上記いずれも `GENERALIZATION_GUIDE.md` の「削除必須パターン」に該当。references/ を upstream と完全一致で維持する discipline (旧 rule C) は、agent 幻覚事故 (#330) の原因になったため撤回。以降 references/ にも rule B と同じ deep 削除ルールを適用する。
 
 ### 取り込み手順 (チェックリスト)
 
@@ -119,6 +133,7 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 |---|---|---|---|
 | 2026-06-04 | (zip 配布のため N/A) | v1.1.0 | Downloads 経由の別ライン。tracking source 切替前 |
 | 2026-07-03 | `a28457cb` | v1.0.7 | tracking source を `claude-skills-repo` git repo に切替。Phase3 テンプレ 5 本のうち `claim-register` / `content-qa-checklist` を採用、`content-brief` は保留、`content-ops-plan` / `content-update-report` は不採用 (制作時のみスコープ)。references/ に `non-commodity-content-standard.md` を追加、旧別ライン由来の `ai-search-content-principles.md` を削除 |
+| 2026-07-03 | (fork 内 cleanup) | v1.0.7 | 事故 #330 対応。`GENERALIZATION_GUIDE.md` を新設し、rule D (references/ の agent-safe 化) を追加。`image-sourcing-framework.md` を 2 手段 (メディアライブラリ / AI 生成) に集約 (Unsplash 等の外部 stock ベンダー名指し全削除、Dropbox 等の人手 workflow 削除、コスト感節削除)。`writing-process.md` / `industry-presets.md` の sibling ref (`client-intake` / `site-diagnosis`) を掃除。SKILL.md を "3 手段" → "2 手段" に整合 |
 
 ### システム側 (consumer) への反映
 
