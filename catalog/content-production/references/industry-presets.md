@@ -1,8 +1,27 @@
-# 業種別プリセット（8業種 + 多角化型：文章トーン・NG表現・法令配慮）
+# 業種別プリセット（旧 8 業種詳細 + canonical 14 業種対応：文章トーン・NG表現・法令配慮）
 
 > プロセス2で使用。業種別の文章ルール・法令遵守事項・必須記載を体系化。
 > 原稿執筆前に必ず該当業種のセクションを確認する。
-> 上位プリセット：多角化型（Multifaceted Business）
+> 本ファイルは旧 8 業種日本語命名で詳細化されているが、システム側では canonical 14 業種英語コードを使う。
+> 上位プリセット：多角化型（multifaceted）
+
+---
+
+## Canonical 14 業種コードへの対応表
+
+| 旧日本語名（本ファイル）| canonical code | schemaType |
+|---|---|---|
+| 1. リフォーム業 | `construction` | HomeAndConstructionBusiness |
+| 2. クリニック | `medical` または `dental` | MedicalBusiness / Dentist |
+| 3. 士業 | `legal` または `financial` | LegalService / FinancialService |
+| 4. 工務店・建設業 | `construction` | HomeAndConstructionBusiness |
+| 5. 広告代理店・マーケティング会社 | `marketing-agency` | ProfessionalService |
+| 6. 飲食店・美容室・ネイルサロン | `restaurant` + `salon` に分割 | Restaurant / BeautySalon |
+| 7. 不動産 | `realestate` | RealEstateAgent |
+| 8. ホテル・旅館・ゲストハウス | `hospitality` | LodgingBusiness |
+| 9. 多角化型 | `multifaceted`（モディファイア） | — |
+
+canonical 14 業種のうち本ファイルに専用セクションがないもの: `dental` / `financial` / `fitness` / `education` / `retail` / `generic`。`fitness`（ジム）/ `education`（教育）/ `retail`（小売）の案件は、本ファイルの「汎用: 業種横断の法令注意点」セクションで対応する。
 
 ---
 

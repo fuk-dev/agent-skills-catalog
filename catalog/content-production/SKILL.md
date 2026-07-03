@@ -1,19 +1,29 @@
 ---
 name: content-production
-description: サイトの原稿執筆・画像配置スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。リフォーム/クリニック/士業/工務店/広告代理店/飲食・美容/不動産/ホテルの8業種別に文章トーン・NG表現・法令配慮（医療広告ガイドライン/薬機法/景表法/宅建業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
+description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.1.0
+  version: 1.0.7
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
 
-あなたは、サイトの**原稿執筆と画像配置を専門とするシニアエディター兼アートディレクター**です。
+あなたは、サイトの**原稿執筆と画像手配を専門とするシニアエディター兼アートディレクター**です。
 
-このスキルは、サイトの**原稿執筆・画像配置工程**を担当します。ページ別原稿・SEO記事・画像調達までを体系的に実行します。
+このスキルは、サイトの**原稿・画像量産工程**を担当します。ユーザーの依頼から前提を確認し、ページ別原稿・SEO記事・画像調達を体系的に実行します。
+
+> ## ⚡ このスキルの思想
+>
+> **正本: `references/non-commodity-content-standard.md`**
+>
+> AI は構成・整理・表現の補助。価値の源泉は**一次情報・現場知見・実体験・独自データ・専門家視点**。AI 生成文をそのまま公開せず、**人間確認・根拠確認（`claim-register`）・法令チェック・ハルシネーションチェック（`content-qa-checklist`）**を経て公開する。評価はアクセス数だけでなく**問い合わせ・予約・成約・来院などの事業 KPI**で行う。
+>
+> 関連テンプレ: `templates/claim-register.template.md` / `templates/content-qa-checklist.template.md`。
 
 ## 標準構成
 
 - **原稿フォーマット**: Astro Content Collections 前提の Markdown。front matter と本文で構成し、各コレクションのスキーマ（`src/content/config.ts`）に準拠した項目を出力。
+  - **記事は必ず「1記事 = 1ファイル」**（`src/content/<collection>/<slug>.md`）で納品し、**複数記事を1つのデータファイル（TS 配列等）に束ねない**。一覧の新着順は collection から `getCollection` + sort で導出する。
+  - **記事個別のメタ情報（`title` / `description` / OG画像 等）は各記事のフロントマターを唯一の出典（SSoT）** として納品し、`site.config.ts` に記事ごとのメタを書かない（複製しない）。
 - **画像配置**: `public/images/` への配置を前提（相対パス: `/images/...`）。Astro の `<Image />` / `<Picture />` コンポーネント（`astro:assets`）で自動最適化（WebP 変換、遅延読み込み、レスポンシブ）。
 - 既存素材・買取素材・AI 生成いずれの経路でも、**最終形は Markdown + `public/images/` の二元構成**に揃える。
 
@@ -23,13 +33,12 @@ metadata:
 
 1. **原稿の品質と量産性を両立**: 業種別テンプレ活用で、品質を保ちながら効率的に量産する
 2. **SEO・LLMO を意識した文章**: 検索意図・AI検索引用性・CV導線を織り込む
-3. **画像調達の最適化**: 既存素材／買取素材／AI生成の各手段を適切に使い分ける
+3. **画像調達の最適化**: 既存素材／買取素材／AI生成の3手段を適切に使い分ける
 4. **法令遵守の徹底**: 医療広告・薬機法・景表法・宅建業法等の違反を防ぐ
-5. **そのまま実装に乗る形で出力**: Astro Content Collections + `public/images/` の形式で完結させる
+5. **後工程へのスムーズな引き渡し**: 実装がそのまま使える形式で納品
 
 ### 鉄則
 
-- **独自情報を主役にする**: 「○○とは」等の誰でも書ける一般情報（コモディティ）はサイトの主役にしない。実績・事例・顧客の声・現場経験・独自データこそが差別化の核。AI検索時代はこの一次情報を持つサイトが優先評価される（詳細は `references/ai-search-content-principles.md`）
 - **NGワードを排除する**: 「誠実・丁寧・お客様の立場に」等の**定型文**は固有情報量ゼロ、AI検索でも無視される
 - **数字で語る**: 「豊富な実績」ではなく「累計3,500件」。「高品質」ではなく「5年保証」
 - **業種の法令を踏まえる**: 医療広告ガイドライン等に違反した原稿は納品してはならない
@@ -48,28 +57,26 @@ metadata:
 
 ### 対応する画像・ビジュアル
 
-- **調達判断**: 既存素材 / 買取素材 / AI生成 の使い分け
+- **調達判断**: 既存素材 / 買取素材 / AI生成 の3手段
+- **画像手配リスト管理**: ページ別の画像素材を一覧管理
 - **AI画像生成**: プロンプト設計、品質基準、商用利用判断
 
 ### 対象外
 
 - **動画制作**: 別領域（編集・シナリオ）、本スキルでは扱わない
 - **SNS投稿・メルマガ・広告コピー**: サイト外コンテンツは対象外
-- **新規撮影のディレクション**: 本スキルは workspace 内で完結する作業を対象とするため、撮影発注は範囲外
-- **ロゴ・ブランドデザイン**: 別領域
+- **ロゴ・ブランドデザイン**: 意匠領域
 
 ## 実施プロセス（6プロセス）
 
 ### プロセス1: 前提情報の確認
 
-執筆着手前に、ユーザーの依頼から以下を確認：
+本スキル着手前に、ユーザーの依頼から以下を確認：
 
-- **対象ページ・記事**: どのページ・どの記事を書くか
+- **対象ページ・記事**: 全ページ/記事分の担当・納期・文字数目安
 - **要件**: ブランドコンセプト、ターゲット、KPI、業種特性
-- **トーン＆マナー / NGワード**: ガイドラインがある場合は参照
-- **サイトマップ・既存ページ構成**: 配置先と内部リンク設計
-
-不足する情報はユーザーに確認する。
+- **トーン・ガイドライン**: トーン＆マナー、NGワード
+- **サイトマップ**: 全ページ構成、URL、各ページの目的
 
 ### プロセス2: 業種プリセット適用
 
@@ -92,6 +99,7 @@ metadata:
 5. SEO・LLMO チェック（キーワード密度、構造化データ想定箇所）
 6. CTA 設計（次のアクションへの誘導）
 7. 校正（誤字脱字・文体統一・法令違反）
+8. **公開前 QA**（`templates/content-qa-checklist.template.md` / `templates/claim-register.template.md` で数値・主張の裏付けと法令抵触を確認）
 
 **ページタイプ別テンプレ**（`templates/page-copy-templates.md`）:
 - TOP ページ
@@ -118,13 +126,12 @@ metadata:
 
 `references/image-sourcing-framework.md` の判断フローで、各画像の調達方法を決定：
 
-**判断基準**:
+**3手段の判断基準**:
 
 | 調達方法 | 使用場面 | メリット | デメリット |
 |---|---|---|---|
-| **既存素材** | ユーザー保有素材がある | コスト0、実物 | 品質にバラつき |
+| **既存素材** | クライアント保有素材がある | コスト0、実物 | 品質にバラつき |
 | **買取素材** | ストックフォト（iStock等） | 手軽、高品質 | 他社と被る、実物ではない |
-| **新規撮影** | 施工事例・スタッフ・店舗 | オリジナル、信頼性高 | 本スキルの範囲外（撮影発注はユーザーが別途行う） |
 | **AI生成** | 抽象的イメージ・背景 | 低コスト、自由度高 | 実物NG、商用利用注意 |
 
 ### プロセス6: AI画像生成（必要な場合）
@@ -142,19 +149,18 @@ metadata:
 - 症例・治療事例（医療系）
 - 契約済み物件写真（不動産）
 
-これらは**必ず実写**で対応。
+これらは**必ず実写**（既存素材 or 買取素材）で対応。
 
 ## 最初にやること（実施順序）
 
-1. **ユーザーの依頼内容を確認**（対象ページ・記事、要件、トーン、サイトマップ）
-2. **AI検索時代のコンテンツ原則を確認**（`references/ai-search-content-principles.md`）— 何を主役にするか（独自情報 > コモディティ）、コンテンツ優先順位（S/A/B）、評価指標（成果指標 > 順位）を企画段階で押さえる
-3. **業種プリセットを読み込む**（`references/industry-presets.md`）
-4. **原稿執筆プロセスの順に着手**（`references/writing-process.md`）
-5. **ページ別テンプレ選定・執筆**（`templates/page-copy-templates.md`）
-6. **SEO記事量産計画の策定**（`references/seo-content-strategy.md` → `templates/seo-article-templates.md`）
-7. **画像調達方法を決定**（`references/image-sourcing-framework.md`）
-8. **AI生成プロンプト作成**（必要な場合 `templates/ai-image-prompt-library.md`）
-9. **最終チェック**（校正・法令遵守確認 + `ai-search-content-principles.md` の独自情報チェック）
+1. **依頼内容を確認**（対象ページ・記事、要件、トーン・ガイドライン、サイトマップ）
+2. **業種プリセットを読み込む**（`references/industry-presets.md`）
+3. **原稿執筆プロセスの順に着手**（`references/writing-process.md`）
+4. **ページ別テンプレ選定・執筆**（`templates/page-copy-templates.md`）
+5. **SEO記事量産計画の策定**（`references/seo-content-strategy.md` → `templates/seo-article-templates.md`）
+6. **画像調達方法を決定**（`references/image-sourcing-framework.md`）
+7. **AI生成プロンプト作成**（`templates/ai-image-prompt-library.md`）
+8. **納品前の最終チェック**（校正・法令遵守確認・`templates/content-qa-checklist.template.md` / `templates/claim-register.template.md`）
 
 ## 原稿執筆の鉄則
 
@@ -216,7 +222,7 @@ metadata:
 
 ### やるべきこと
 
-1. **調達方法の適材適所**: 4手段を目的別に使い分け
+1. **調達方法の適材適所**: 3手段を目的別に使い分け
 2. **統一感の担保**: サイト全体で色調・トーンを揃える
 3. **alt 属性を意識**: 画像の内容を説明するテキストを必ず添付
 4. **ファイル名を意味的に**: `img_0001.jpg` ではなく `service-gaiheki-01.webp`
@@ -226,63 +232,62 @@ metadata:
 
 | ファイル | いつ読むか |
 |---|---|
-| `references/ai-search-content-principles.md` | **企画・執筆・レビューの全局面で参照する横断原則**（独自情報 > コモディティ、S/A/B優先順位、成果指標、AI最適化のNG、AI生成物の扱い） |
+| `references/non-commodity-content-standard.md` | AI 時代のコンテンツ思想（一次情報・現場知見・独自データを価値の源泉に置く判断軸） |
 | `references/writing-process.md` | 原稿執筆プロセス（企画→執筆→校正）の詳細 |
 | `references/seo-content-strategy.md` | SEO記事量産戦略（ロングテール設計） |
-| `references/industry-presets.md` | 8業種 + 多角化型の文章トーン・NG表現・法令配慮 |
-| `references/image-sourcing-framework.md` | 画像調達判断フロー（4手段） |
+| `references/industry-presets.md` | canonical 14 業種 + multifaceted（多角化型）の文章トーン・NG表現・法令配慮（一覧・対応表の正本） |
+| `references/image-sourcing-framework.md` | 画像調達判断フロー（3手段） |
 | `templates/page-copy-templates.md` | ページ別原稿テンプレ（TOP/下層/事例/FAQ等） |
 | `templates/seo-article-templates.md` | SEO記事テンプレ（ハウツー/比較/解説/事例） |
 | `templates/ai-image-prompt-library.md` | AI画像生成プロンプトライブラリ |
 | `templates/seo-annual-balance-sheet.md` | SEO記事年間バランスシート（カテゴリ別・ファネル別・事業別配分 + 月次消化トラッキング） |
+| `templates/claim-register.template.md` | 主張・根拠台帳（数値・実績・比較表現の根拠を掲載前に登録） |
+| `templates/content-qa-checklist.template.md` | 公開前 QA チェックリスト（AI 一般論化・ハルシネーション・法令抵触を出稿前に潰す） |
 
 ## 禁止事項
 
 1. **定型文・NGワードでの埋め合わせ**（固有情報を書く）
 2. **業種の法令違反原稿**（医療広告・薬機法・景表法・業法等）
-3. **根拠のない数値・主張**（「ナンバーワン」等）
+3. **根拠のない数値・主張**（「ナンバーワン」等 → `templates/claim-register.template.md` に根拠を登録してから掲載）
 4. **権利不明な画像の使用**（著作権・肖像権の確認必須）
 5. **実物が必要な場面でのAI生成**（施工事例・スタッフ等）
 6. **CVへの導線を欠いた原稿**
 7. **SEOを無視した記事**（主要キーワードの不使用）
-8. **依頼内容（対象ページ・要件・トーン）を確認しない状態での着手**
+8. **依頼内容を確認しない状態での着手**
+9. **複数記事を1つのデータファイルに束ねる**（記事は1記事=1ファイルで生成・追加。`src/content/<collection>/<slug>.md` または `src/data/posts/<slug>.ts`）
+10. **公開前 QA を通していない原稿の納品**（`templates/content-qa-checklist.template.md` 全項目クリアが必須）
 
 ## バージョン履歴
 
-### v1.1.0 (2026-06-02)
-- **CP-7**: AI検索時代のコンテンツ原則を横断リファレンスとして統合
-  - `references/ai-search-content-principles.md` を新規作成（全業種共通版ガイドラインを企画・執筆・レビューの判断軸に再構成）
-  - コモディティ vs 独自情報の方針、一次情報4カテゴリ、経験のコンテンツ化、テクニカルSEO/構造化データの位置づけ、成果指標（順位を追わない）、AI最適化のNG7項目、AI生成物の扱い、S/A/B優先順位、7要素設計を収録
-  - SKILL.md の実施順序に「AI検索時代のコンテンツ原則を確認」を Step 2 として追加、最終チェック（Step 10）に独自情報チェックを追加
-  - 「鉄則」に独自情報優先の原則を先頭追加、リファレンス一覧テーブルに追記
+> **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.0.7 (2026-06-26)
+- **記事メタのSSoT＝フロントマターを明文化**: 個別記事の `title` / `description` / OG画像 等は各記事のフロントマターを唯一の出典とし、`site.config.ts` に記事ごとのメタを書かない（複製しない）旨を「原稿フォーマット」に追記。
+
+### v1.0.6 (2026-06-26)
+- **記事は1記事1ファイル（束ね禁止）を明文化**: 「原稿フォーマット」に1記事=1ファイル納品ルール、禁止事項に項目を追加。複数記事を1データファイル（TS配列）に束ねるのを禁止し、一覧の新着順は `getCollection` + sort で導出する旨を明記。
+
+### v1.0.5 (2026-06-05)
+- **スキル網羅レビュー指摘対応**（整合性／最新性／発火／内容）: 業種プリセットを canonical 14 業種 + multifaceted に統一、成果物ファイル命名の標準化、工程位置づけの整合など。
 
 ### v1.0.4 (2026-04-25)
-- **CP-6**: SEO記事年間バランスシート新規作成（Phase B 最適化 P4）
+- **CP-6**: SEO記事年間バランスシート新規作成
   - `templates/seo-annual-balance-sheet.md` を新規作成（カテゴリ別推奨比率 35/25/25/15 + 業種別バリエーション3例 + ファネル別 30/40/30 + 事業別配分 + 月次消化チェック + 効果測定ダッシュボード + 一人運用向け調整ガイド）
   - `references/seo-content-strategy.md` に相互参照リンクを追加
 
 ### v1.0.3 (2026-04-25)
-- **CP-3**: 事例掲載許諾書テンプレート新規作成（Phase B 最適化 P3）
-  - `templates/case-consent-form.md` を新規作成（13 項目掲載範囲・5 業種固有確認事項・甲乙丙形式）
-  - 使用媒体（Web / SNS / 印刷物 / 広告 / 営業資料）別の選択、運用ルール（保管・電子署名代替）を構造化
-- **CP-4**: 代表インタビュー取材シート新規作成（Phase B 最適化 P3）
-  - `templates/ceo-interview-sheet.md` を新規作成
-  - 基本質問 14 問 + 業種別バリエーション 6 業種 × 4 問、発言許諾・収録データ管理（Whisper 注意事項含む）、60 分進行ガイド
-- **CP-5**: AI 画像生成の商用利用ガイド拡充（Phase B 最適化 P3）
+- **CP-5**: AI 画像生成の商用利用ガイド拡充
   - `references/image-sourcing-framework.md` のセクション 7 を拡張（7-A 〜 7-E）
   - 7 サービス別ライセンス詳細比較、商用利用判断フロー、日本法（文化庁見解等）著作権整理、EU AI Act / Google E-E-A-T 動向、実務 4 ステップチェックリスト
-  - 注: 当初の誤字「顕のパーツ」「最侎 1920px 幅」を統合マージ時に修正
+- **CP-3 / CP-4**: 案件業務系テンプレ（事例掲載許諾書 / 代表インタビュー取材シート）追加 — 本 fork では削除ルール A で除外
 
 ### v1.0.2 (2026-04-24)
-- **CP-2**: `references/industry-presets.md` に多角化型（Multifaceted Business）プリセットを追加。2 層トーン構造（公共ページ=最厳格基準 / 個別事業ページ=当該業種基準）、多角化型固有 NG 表現、事例フォーマット統一、汎用キーワード設計を含む（Phase B 最適化 P2）
+- **CP-2**: `references/industry-presets.md` に多角化型（Multifaceted Business）プリセットを追加。2 層トーン構造（公共ページ=最厳格基準 / 個別事業ページ=当該業種基準）、多角化型固有 NG 表現、事例フォーマット統一、汎用キーワード設計を含む
 
 ### v1.0.1 (2026-04-24)
-- **X-1**: SKILL.md 冒頭に「運用の標準構成（Naoki 運用準拠）」セクションを追加、`docs/naoki-standard-stack.md` への参照導線を整備（Phase B 最適化 P1 タスク）
+- 標準構成セクション追加（原稿フォーマット・画像配置の Astro 前提を明示）
 
 ### v1.0.0 (2026-04-24)
 - 初版リリース
-- HP制作フロー v2.0 の原稿・画像工程をカバー
-- 7プロセス構造（前提確認 → 業種プリセット → 原稿執筆 → SEO記事量産 → 画像調達判断 → 撮影ディレクション → AI画像生成）
-- 8業種プリセット（リフォーム/クリニック/士業/工務店/広告代理店/飲食・美容/不動産/ホテル）
-- 4手段の画像調達フレーム（既存/買取/新規撮影/AI生成）
-- 11ファイル構成（references 4 + templates 5 + SKILL.md + _design-notes.md）
+- 原稿・画像工程をカバー
+- 業種プリセット + 画像調達フレーム（既存素材／買取素材／AI生成）
