@@ -1,8 +1,8 @@
 ---
 name: content-production
-description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
+description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告等ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.0.7
+  version: 1.1.0
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
@@ -41,7 +41,7 @@ metadata:
 
 - **NGワードを排除する**: 「誠実・丁寧・お客様の立場に」等の**定型文**は固有情報量ゼロ、AI検索でも無視される
 - **数字で語る**: 「豊富な実績」ではなく「累計3,500件」。「高品質」ではなく「5年保証」
-- **業種の法令を踏まえる**: 医療広告ガイドライン等に違反した原稿は納品してはならない
+- **業種の法令を踏まえる**: 医療広告等ガイドラインをはじめとする業種の法令に違反した原稿は納品してはならない
 - **CV 導線を設計する**: 原稿の終わりには必ず「次にして欲しい行動」を配置
 - **画像は原稿と連動**: 原稿が訴求するポイントと画像が一致していなければ意味がない
 - **AI生成画像は万能ではない**: 実写が必要な場面（施工事例・スタッフ紹介等）で使わない
@@ -261,6 +261,12 @@ metadata:
 ## バージョン履歴
 
 > **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.1.0 (2026-07-13) — upstream PR-A 医療法令アップデート（FB-01〜03）を同期
+- **FB-01**: クリニック節の法令名を正式名称「医業若しくは歯科医業又は病院若しくは診療所に関する広告等に関する指針（医療広告等ガイドライン、令和8年3月30日最終改正）」へ統一（旧称「医療広告ガイドライン」を全廃）。「法令」節に参照正本ブロック（親ページ／本体／事例解説書 第6版／Q&A の4リンク＋出典確認日）を新設。
+- **FB-02**: 患者体験談を per-se 禁止（限定解除でも不可・スタッフ記載/アンケート転載も対象）へ変更。ビフォーアフター写真を「詳細説明の併記」の別規律として分離。qa-checklist 医療項目を3分割。
+- **FB-03**: 外部口コミ転載・選別・編集の禁止（体験談広告規制）＋横断法令節にステマ告示（2023年10月施行）を追記。qa-checklist に2項目追加。
+- FB-01〜03 はいずれも「法令 craft」（GENERALIZATION_GUIDE 分類2）のため fork では全て保持。upstream v1.0.10 の業種コード正本宣言ヘッダ（正本 = astro-base-theme）は sibling ref のため rule D で除外。
 
 ### v1.0.7 (2026-06-26)
 - **記事メタのSSoT＝フロントマターを明文化**: 個別記事の `title` / `description` / OG画像 等は各記事のフロントマターを唯一の出典とし、`site.config.ts` に記事ごとのメタを書かない（複製しない）旨を「原稿フォーマット」に追記。
