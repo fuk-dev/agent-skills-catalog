@@ -251,7 +251,7 @@ CTA: 類似案件のお問い合わせ
 - リンク先: サービスページ / 事例ページ
 
 ### 構造化データ
-- 該当するもの: Article / FAQPage / HowTo 等
+- 実装前に Google Search Gallery で現行サポートと利用条件を確認する（schema.org 妥当性 ≠ Google 検索機能サポート）。FAQPage / HowTo は現在リッチリザルト非対応（詳細は §5「構造化データの対応」）。
 
 ### 執筆者・納期
 - 執筆担当:
@@ -302,23 +302,25 @@ CTA: 類似案件のお問い合わせ
 5. **内部リンクを 3-5 箇所**（関連ページへ誘導）
 6. **外部リンクは信頼できるソースのみ**（政府・専門機関等）
 
-### FAQ セクションを追加
+### FAQ セクション（実在する疑問がある場合のみ）
 
-記事末尾に 3-5 問の FAQ を追加：
+FAQ は固定レシピで機械的に付けない。**実在する読者の疑問**（受付・現場で実際に聞かれる質問、GSC クエリ由来）があり、**独自の具体的な回答**を提供できる場合にのみ設ける。
 
-- **検索流入が増える**（People Also Ask で露出）
-- **AI 検索で引用される**（FAQPage 構造化データ）
-- **回遊率向上**（興味を深める）
+- 問数は固定しない（実在する疑問の数だけ。埋めるための水増し Q&A を作らない）。
+- 露出・引用・回遊を目的化しない（`non-commodity-content-standard.md` §3「やらなくていいこと」参照）。
 
 ### 構造化データの対応
+
+実装前に必ず Google Search Gallery（https://developers.google.com/search/docs/appearance/structured-data/search-gallery）で現行サポートと利用条件を確認する（**schema.org 上の妥当性と Google の検索機能サポートは別物**）。
 
 | 記事タイプ | 対応構造化データ |
 |---|---|
 | 全記事 | Article + BreadcrumbList |
-| ハウツー型 | + HowTo |
-| FAQ を含む | + FAQPage |
-| 比較型 | + （特になし） |
-| 事例型 | + Review（お客様の声部分） |
+| ハウツー型 | Article のみ（HowTo リッチリザルトは 2023 年に廃止済み） |
+| 比較型 | Article のみ |
+| 事例型 | Article（自社・自組織を対象とし自社が管理するレビューは Google の star review feature の対象外＝self-serving。医療・美容医療・歯科では体験談規制が優先＝`industry-presets.md` クリニック節 FB-02/FB-03 参照） |
+
+> **FAQPage について**: FAQ リッチリザルトは 2026-05-07 に Google 検索での表示終了（Search Console レポート・リッチリザルトテスト対応は 2026-06、Search Console API 対応は 2026-08 に段階削除）。**AI 検索効果を目的とした新規追加はしない**。既存 markup の一斉削除は不要——ページ改修時に可視 FAQ との一致と利用目的を確認して整理し、内容不一致・誤りはその時点で修正・削除する。
 
 ---
 
