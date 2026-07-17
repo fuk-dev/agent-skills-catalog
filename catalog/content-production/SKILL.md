@@ -2,7 +2,7 @@
 name: content-production
 description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告等ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.1.0
+  version: 1.3.1
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
@@ -261,6 +261,13 @@ metadata:
 ## バージョン履歴
 
 > **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.3.1 (2026-07-16) — upstream PR-B/C/D（FB-04/05/06/08）を同期
+- **FB-04**（PR-B）: `seo-content-strategy.md`「FAQ セクション」の固定レシピ（末尾 3-5 問＋露出/引用/回遊の効果主張）を廃止 → 実在する疑問＋独自回答がある場合のみの価値ベース基準へ。`non-commodity-content-standard.md` §3 に「定型 Q&A の量産をしない」を追記。
+- **FB-05**（PR-B）: FAQPage の AI 検索効果記述を全廃し注記へ置換（2026-05-07 表示終了／2026-06・2026-08 段階削除／新規非推奨・一斉削除不要・改修時整理）。構造化データ例示から FAQPage/HowTo を外し Google Search Gallery 確認へ。`writing-process.md` FAQ 行も同期。
+- **FB-08**（PR-B）: 構造化データ対応表から HowTo 削除（2023 年廃止）。事例型/口コミの Review に self-serving 対象外＋医療は体験談規制優先（FB-02/03）注記。`writing-process.md` 口コミ行も同期。
+- **FB-06**（PR-C）: `claim-register.template.md` に「同意状態」列＋数値・調査系の必須8項目（時期/母数/方法/定義/除外条件/実施主体/根拠資料/更新日）。「法令注意」に調査条件なし数値＝虚偽・誇大広告リスク（事例解説書 第6版）を追記。`content-qa-checklist.template.md` の数値項目を「登録＋使用可＋本文併記」の3点確認へ。`non-commodity-content-standard.md` §2 に要件粒度参照。
+- **FB-07**（PR-D）は **MA catalog では N/A**（upstream の `docs/skill-feedback-loop.md`＋`docs/derived/` の派生文書ガバナンス基盤で、本 fork に該当ファイルが無い。non-commodity 正本宣言の派生文書行も fork 非存在パス参照のため rule D で除外）。version は upstream 1.3.1 に合わせるが FB-07 の実体は含まない。
 
 ### v1.1.0 (2026-07-13) — upstream PR-A 医療法令アップデート（FB-01〜03）を同期
 - **FB-01**: クリニック節の法令名を正式名称「医業若しくは歯科医業又は病院若しくは診療所に関する広告等に関する指針（医療広告等ガイドライン、令和8年3月30日最終改正）」へ統一（旧称「医療広告ガイドライン」を全廃）。「法令」節に参照正本ブロック（親ページ／本体／事例解説書 第6版／Q&A の4リンク＋出典確認日）を新設。
