@@ -11,7 +11,7 @@
 ### Source
 
 - **Origin**: `github.com/jirhigashi-sketch/claude-skills-repo` — `skills/content-production/` (mainline: `origin/main`)
-- **Last synced from**: v1.3.1 (2026-07-16, SHA `5bde034f` = PR #247 merge / FB-01〜08)
+- **Last synced from**: v1.3.2 (2026-07-17, SHA `5119a937` = PR #250 merge / 名称統一追い掃除)
 - **Synced at**: 2026-07-16
 - **Tracking source**: 上記 git repo (2026-07-03 に zip 配布から切替済)
 
@@ -136,6 +136,7 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 | 2026-07-03 | (fork 内 cleanup) | v1.0.7 | 事故 #330 対応。`GENERALIZATION_GUIDE.md` を新設し、rule D (references/ の agent-safe 化) を追加。`image-sourcing-framework.md` を 2 手段 (メディアライブラリ / AI 生成) に集約 (Unsplash 等の外部 stock ベンダー名指し全削除、Dropbox 等の人手 workflow 削除、コスト感節削除)。`writing-process.md` / `industry-presets.md` の sibling ref (`client-intake` / `site-diagnosis`) を掃除。SKILL.md を "3 手段" → "2 手段" に整合 |
 | 2026-07-14 | `18e8e0f4` | v1.1.0 | upstream PR-A 医療法令アップデート (FB-01〜03) を同期。`references/industry-presets.md` (医療広告等ガイドライン名称正典化＋参照正本ブロック / 患者体験談 per-se 禁止化＋BA規律分離 / 外部口コミ転載NG＋ステマ告示) と `templates/content-qa-checklist.template.md` (医療3分割＋外部口コミ/ステマ2項目) に法令デルタを適用。SKILL.md は frontmatter version 1.0.7→1.1.0・description の法令名・鉄則「業種の法令を踏まえる」を新名称へ。全て法令 craft (guide 分類2) のため保持。upstream v1.0.10 の業種コード正本宣言ヘッダ (正本 = astro-base-theme) は sibling ref のため rule D で除外。※ FB-04〜08 は upstream 側で PR-B〜D として順次予定 (本 sync では未取込) |
 | 2026-07-16 | `5bde034f` | v1.3.1 | upstream PR-B/C/D (FB-04/05/06/08) を同期。`seo-content-strategy.md` (FAQ 固定レシピ廃止→価値ベース / FAQPage 効果記述全廃＋新規非推奨注記 / HowTo 削除・Review self-serving / Search Gallery 確認) ・`writing-process.md` (FAQ/口コミ行) ・`non-commodity-content-standard.md` (§3 定型 Q&A 量産禁止 / §2 数値8項目参照) ・`claim-register.template.md` (同意状態列＋必須8項目＋法令注意) ・`content-qa-checklist.template.md` (数値項目を3点確認へ) に craft デルタを適用。SKILL.md version 1.1.0→1.3.1。**FB-07 (PR-D) は N/A**: upstream の `docs/skill-feedback-loop.md`＋`docs/derived/` の派生文書ガバナンス基盤で本 fork に該当ファイルが無い。non-commodity 正本宣言の派生文書行も fork 非存在パス (`docs/derived/`) 参照のため rule D で除外。version 番号のみ upstream 1.3.1 に合わせる (FB-07 実体は非取込) |
+| 2026-07-17 | `5119a937` | v1.3.2 | upstream の名称統一追い掃除 (旧称「医療広告ガイドライン」→「医療広告等ガイドライン」) を同期。`references/writing-process.md` / `templates/ai-image-prompt-library.md` の各1箇所。名称のみで挙動不変。upstream で対象の `case-consent-form.md` は fork で削除済 (rule A)、`_design-notes.md` / `evals/` は fork 非収録のため対象外。SKILL.md version 1.3.1→1.3.2 |
 
 ### システム側 (consumer) への反映
 

@@ -2,7 +2,7 @@
 name: content-production
 description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告等ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.3.1
+  version: 1.3.2
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
@@ -261,6 +261,9 @@ metadata:
 ## バージョン履歴
 
 > **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.3.2 (2026-07-17) — upstream の名称統一追い掃除を同期
+- 旧称「医療広告ガイドライン」→「医療広告等ガイドライン」へ統一（`references/writing-process.md` / `templates/ai-image-prompt-library.md`）。upstream v1.3.2 と一致。名称のみで挙動不変。fork では既に削除済みの `case-consent-form.md` と、fork 非収録の `_design-notes.md` / `evals/` は対象外。
 
 ### v1.3.1 (2026-07-16) — upstream PR-B/C/D（FB-04/05/06/08）を同期
 - **FB-04**（PR-B）: `seo-content-strategy.md`「FAQ セクション」の固定レシピ（末尾 3-5 問＋露出/引用/回遊の効果主張）を廃止 → 実在する疑問＋独自回答がある場合のみの価値ベース基準へ。`non-commodity-content-standard.md` §3 に「定型 Q&A の量産をしない」を追記。
