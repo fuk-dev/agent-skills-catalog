@@ -2,7 +2,7 @@
 name: content-production
 description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告等ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.3.2
+  version: 1.3.3
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
@@ -21,7 +21,7 @@ metadata:
 
 ## 標準構成
 
-- **原稿フォーマット**: Astro Content Collections 前提の Markdown。front matter と本文で構成し、各コレクションのスキーマ（`src/content/config.ts`）に準拠した項目を出力。
+- **原稿フォーマット**: Astro Content Collections 前提の Markdown。front matter と本文で構成し、各コレクションのスキーマ（**Astro 5 の `glob()` loader 方式**で `src/content.config.ts` に定義。レガシー記法 `type: 'content'` / `type: 'data'` は**禁止**）に準拠した項目を出力。
   - **記事は必ず「1記事 = 1ファイル」**（`src/content/<collection>/<slug>.md`）で納品し、**複数記事を1つのデータファイル（TS 配列等）に束ねない**。一覧の新着順は collection から `getCollection` + sort で導出する。
   - **記事個別のメタ情報（`title` / `description` / OG画像 等）は各記事のフロントマターを唯一の出典（SSoT）** として納品し、`site.config.ts` に記事ごとのメタを書かない（複製しない）。
 - **画像配置**: `public/images/` への配置を前提（相対パス: `/images/...`）。Astro の `<Image />` / `<Picture />` コンポーネント（`astro:assets`）で自動最適化（WebP 変換、遅延読み込み、レスポンシブ）。
@@ -212,7 +212,7 @@ metadata:
    - 店舗の外観・内観
 
 3. **低品質画像をそのまま使う**
-   - 解像度 300dpi 未満
+   - Web 表示に必要なピクセル数を下回る（表示幅の 2 倍を目安に確保する）
    - 圧縮しすぎでノイズあり
    - 明らかに歪んだ AI 生成画像
 
@@ -257,10 +257,16 @@ metadata:
 8. **依頼内容を確認しない状態での着手**
 9. **複数記事を1つのデータファイルに束ねる**（記事は1記事=1ファイルで生成・追加。`src/content/<collection>/<slug>.md` または `src/data/posts/<slug>.ts`）
 10. **公開前 QA を通していない原稿の納品**（`templates/content-qa-checklist.template.md` 全項目クリアが必須）
+11. **Content Collections のレガシー記法（`type: 'content'` / `type: 'data'`）を前提とした納品・実装指定**（Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404 の原因になる。コレクション定義は Astro 5 の `glob()` loader 方式に従う）
 
 ## バージョン履歴
 
 > **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.3.3 (2026-07-27) — upstream の Astro 5 Content Collections 正典化を同期
+- **コレクション定義を Astro 5 の `glob()` loader 方式へ更新**: 「標準構成」の原稿フォーマットを旧 `src/content/config.ts` から `src/content.config.ts` + `glob()` loader に差し替え、レガシー記法 `type: 'content'` / `type: 'data'` を禁止と明記。禁止事項に項目11（レガシー記法前提の納品・実装指定の禁止。Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404 の原因）を追加。upstream v1.3.3 と一致。
+- upstream が併記する実装側正本パス（`astro-base-theme/references/part-0-common-spec.md`）は sibling skill 参照のため rule D で除外し、規範本体（glob loader 方式 / レガシー記法禁止 / 404 になる理由）のみ保持。
+- 併せて fork 内の残存 2 件を掃除（`GENERALIZATION_GUIDE.md` 削除必須パターン「物理媒体・DPI・印刷」「人手 workflow」）: 画像品質基準の `300dpi` を Web 前提のピクセル基準へ、`templates/ai-image-prompt-library.md` の「実写撮影かプロのイラストレーター」を agent 実行可能な代替行動へ置換。
 
 ### v1.3.2 (2026-07-17) — upstream の名称統一追い掃除を同期
 - 旧称「医療広告ガイドライン」→「医療広告等ガイドライン」へ統一（`references/writing-process.md` / `templates/ai-image-prompt-library.md`）。upstream v1.3.2 と一致。名称のみで挙動不変。fork では既に削除済みの `case-consent-form.md` と、fork 非収録の `_design-notes.md` / `evals/` は対象外。
