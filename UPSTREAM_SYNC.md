@@ -11,8 +11,11 @@
 ### Source
 
 - **Origin**: `github.com/jirhigashi-sketch/claude-skills-repo` — `skills/content-production/` (mainline: `origin/main`)
-- **Last synced from**: v1.3.3 (2026-07-24, SHA `21234deb` = Content Collections の Astro 5 glob loader 正典化)
-- **Synced at**: 2026-07-27
+- **Last synced from**: v1.3.4 (2026-08-13, upstream PR **#258** = 予約ページの path を予約語化 / `/reservations/` 使用禁止)
+- **Synced at**: 2026-08-13
+- **前回**: v1.3.3 (2026-07-24, SHA `21234deb` = Content Collections の Astro 5 glob loader 正典化) / synced at 2026-07-27
+
+> ⚠️ **v1.3.4 は upstream PR #258 と並行で作成した**。本 PR は **upstream #258 のマージ後にマージ**すること（レビューで文言が変わった場合は追随する）。マージ後に上記 `Last synced from` の PR 番号を merge SHA に置き換える。
 - **Tracking source**: 上記 git repo (2026-07-03 に zip 配布から切替済)
 
 ### 系統ズレメモ (履歴)
