@@ -2,7 +2,7 @@
 name: content-production
 description: サイトの原稿執筆・画像手配スキル。ページ別原稿（TOP/下層/事例/FAQ）、SEO記事量産、画像調達（既存/買取/AI生成）を体系化。canonical 14 業種（medical/dental/legal/financial/restaurant/salon/fitness/education/realestate/retail/construction/marketing-agency/hospitality/generic）+ multifaceted（多角化型）の業種別プリセット（一覧・対応表は references/industry-presets.md を正本として参照）で文章トーン・NG表現・法令配慮（医療広告等ガイドライン/薬機法/景表法/宅建業法/建設業法等）をプリセット化。Use this skill whenever the user mentions "原稿作成", "コピーライティング", "SEO記事", "ブログ記事量産", "画像手配", "AI画像生成", "ロングテール記事", "ページコピー", "content production", "SEO writing", "image sourcing". This skill covers the WRITING and VISUAL ASSET PLACEMENT phase. Trigger whenever 原稿・ライティング・画像手配 tasks are needed, even if the user does not explicitly name this skill.
 metadata:
-  version: 1.3.3
+  version: 1.3.4
 ---
 
 # 原稿執筆・画像手配スキル（content-production）
@@ -258,10 +258,17 @@ metadata:
 9. **複数記事を1つのデータファイルに束ねる**（記事は1記事=1ファイルで生成・追加。`src/content/<collection>/<slug>.md` または `src/data/posts/<slug>.ts`）
 10. **公開前 QA を通していない原稿の納品**（`templates/content-qa-checklist.template.md` 全項目クリアが必須）
 11. **Content Collections のレガシー記法（`type: 'content'` / `type: 'data'`）を前提とした納品・実装指定**（Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404 の原因になる。コレクション定義は Astro 5 の `glob()` loader 方式に従う）
+12. **予約ページを `src/pages/reservations/` に置く**（`src/pages/reservations/` は予約済みディレクトリ。`/reservations/` と `/reservations/<任意の slug>` の URL はどちらも使わない。同 path を生む動的ルート・`_redirects` の宛先も不可）
+    - **代替**: 予約導線のページは `src/pages/reserve/`（= `/reserve/`）に置く。電話予約・外部予約サービスへの導線ページもこちら
+    - 必須ページに「予約」を含む業種（restaurant / salon / hospitality）も配置先は `/reserve/`。必須ページの要件は path ではなく**予約導線が存在すること**で満たす
 
 ## バージョン履歴
 
 > **Note**: MA 向け fork。upstream `claude-skills-repo` の `content-production` から、汎用化のための削除ルール（sibling skill 参照 / 撮影ディレクション / 案件業務系テンプレ / 継続運用スキーム等）を適用。ルール詳細は本 repo の `UPSTREAM_SYNC.md` を参照。以下の履歴は upstream 側の変更ログ。
+
+### v1.3.4 (2026-08-13) — upstream の予約 path 予約語化を同期
+- **予約ページの path 規約を追加**: 禁止事項に項目12（`src/pages/reservations/` にページを置くことの禁止。`/reservations/` と `/reservations/<slug>` の URL は使わない。予約導線は `/reserve/` に配置）を追加。必須ページに「予約」を含む業種（restaurant / salon / hospitality）の配置先も `/reserve/` に統一。upstream v1.3.4 と一致。
+- upstream が併記する実装側正本パス（`astro-base-theme/references/part-0-common-spec.md` 0-9）は sibling skill 参照のため rule D で除外し、規範本体（禁止 path / 代替 path / 業種プリセットの扱い）のみ保持。
 
 ### v1.3.3 (2026-07-27) — upstream の Astro 5 Content Collections 正典化を同期
 - **コレクション定義を Astro 5 の `glob()` loader 方式へ更新**: 「標準構成」の原稿フォーマットを旧 `src/content/config.ts` から `src/content.config.ts` + `glob()` loader に差し替え、レガシー記法 `type: 'content'` / `type: 'data'` を禁止と明記。禁止事項に項目11（レガシー記法前提の納品・実装指定の禁止。Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404 の原因）を追加。upstream v1.3.3 と一致。

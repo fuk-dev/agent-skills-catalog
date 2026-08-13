@@ -11,8 +11,9 @@
 ### Source
 
 - **Origin**: `github.com/jirhigashi-sketch/claude-skills-repo` — `skills/content-production/` (mainline: `origin/main`)
-- **Last synced from**: v1.3.3 (2026-07-24, SHA `21234deb` = Content Collections の Astro 5 glob loader 正典化)
-- **Synced at**: 2026-07-27
+- **Last synced from**: v1.3.4 (2026-08-13, SHA `f64c4084` = 予約ページの path を予約語化 / `/reservations/` 使用禁止。upstream PR #258)
+- **Synced at**: 2026-08-13
+- **前回**: v1.3.3 (2026-07-24, SHA `21234deb` = Content Collections の Astro 5 glob loader 正典化) / synced at 2026-07-27
 - **Tracking source**: 上記 git repo (2026-07-03 に zip 配布から切替済)
 
 ### 系統ズレメモ (履歴)
@@ -66,7 +67,7 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 | 追加 | `## 禁止事項` に 2 項目 | "根拠のない数値・主張" に claim-register 誘導 / "公開前 QA を通していない原稿の納品" を追加 |
 | 置換 | `## 禁止事項` の "client-intake の成果物を確認しない状態での着手" | "依頼内容を確認しない状態での着手" |
 | 置換 | 本文中の `astro-base-theme` / `frontend-design` / `docs/*` への参照 | "実装" / 削除 等の単純化 |
-| 削除 | 「原稿フォーマット」/ 禁止事項 の実装側正本パス `skills/astro-base-theme/references/part-0-common-spec.md` 0-9 (v1.3.3 で追加) | sibling skill 参照。規範本体 (Astro 5 `glob()` loader 方式 / レガシー記法 `type: 'content'` 禁止 / `.md` 付き URL → 404 の理由) は craft として保持する |
+| 削除 | 「原稿フォーマット」/ 禁止事項 の実装側正本パス `skills/astro-base-theme/references/part-0-common-spec.md` 0-9 (v1.3.3 / v1.3.4 で追加) | sibling skill 参照。規範本体 (Astro 5 `glob()` loader 方式 / レガシー記法 `type: 'content'` 禁止 / `.md` 付き URL → 404 の理由) は craft として保持する |
 | 置換 | frontmatter `description` | sibling skill (`client-intake` / `site-diagnosis` / `site-audit` / `visual-brief`) 参照を削除、`撮影ディレクション` / `photo direction` / `新規撮影` 言及を削除 |
 | 追加 | `## バージョン履歴` 冒頭に fork Note | 「これは MA fork。sibling ref / 撮影 / 案件業務系テンプレ / 継続運用スキームを削除ルール適用」旨を明記 |
 
@@ -158,6 +159,7 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 | 2026-07-16 | `5bde034f` | v1.3.1 | upstream PR-B/C/D (FB-04/05/06/08) を同期。`seo-content-strategy.md` (FAQ 固定レシピ廃止→価値ベース / FAQPage 効果記述全廃＋新規非推奨注記 / HowTo 削除・Review self-serving / Search Gallery 確認) ・`writing-process.md` (FAQ/口コミ行) ・`non-commodity-content-standard.md` (§3 定型 Q&A 量産禁止 / §2 数値8項目参照) ・`claim-register.template.md` (同意状態列＋必須8項目＋法令注意) ・`content-qa-checklist.template.md` (数値項目を3点確認へ) に craft デルタを適用。SKILL.md version 1.1.0→1.3.1。**FB-07 (PR-D) は N/A**: upstream の `docs/skill-feedback-loop.md`＋`docs/derived/` の派生文書ガバナンス基盤で本 fork に該当ファイルが無い。non-commodity 正本宣言の派生文書行も fork 非存在パス (`docs/derived/`) 参照のため rule D で除外。version 番号のみ upstream 1.3.1 に合わせる (FB-07 実体は非取込) |
 | 2026-07-27 | `21234deb` | v1.3.3 | upstream の Content Collections Astro 5 正典化を同期。SKILL.md のみ (upstream 差分も SKILL.md 1 ファイル)。「標準構成」の原稿フォーマットを `src/content/config.ts` → `src/content.config.ts` + `glob()` loader 方式へ、禁止事項に項目11 (レガシー記法 `type: 'content'` / `type: 'data'` 前提の納品・実装指定を禁止。理由: Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404) を追加。upstream 併記の実装側正本パス (`astro-base-theme/.../part-0-common-spec.md` 0-9) は rule D で除外し規範本体のみ保持。**併せて fork 内の残存 2 件を掃除**: SKILL.md の `300dpi` → Web 前提のピクセル基準、`ai-image-prompt-library.md` の「実写撮影かプロのイラストレーター」→ メディアライブラリ参照 + ユーザー依頼で停止 (いずれも旧 rule C の無条件維持で残っていた分)。取り込み手順に step 0 (本 repo の最新化) を新設し、step 1/3 を read-only 参照・選択コピーに改訂 |
 | 2026-07-17 | `5119a937` | v1.3.2 | upstream の名称統一追い掃除 (旧称「医療広告ガイドライン」→「医療広告等ガイドライン」) を同期。`references/writing-process.md` / `templates/ai-image-prompt-library.md` の各1箇所。名称のみで挙動不変。upstream で対象の `case-consent-form.md` は fork で削除済 (rule A)、`_design-notes.md` / `evals/` は fork 非収録のため対象外。SKILL.md version 1.3.1→1.3.2 |
+| 2026-08-13 | `f64c4084` | v1.3.4 | upstream PR #258「予約ページの path を予約語化」を同期。SKILL.md のみ。禁止事項に項目12 (`src/pages/reservations/` にページを置かない。`/reservations/` と `/reservations/<slug>` の URL は使わない。代替は `/reserve/`) を追加し、必須ページに「予約」を含む業種 (restaurant / salon / hospitality) の配置先も `/reserve/` に統一。upstream 併記の実装側正本パス (`astro-base-theme/.../part-0-common-spec.md` 0-9) は rule D で除外し規範本体のみ保持 (項目9・11 と同じ扱い)。SKILL.md version 1.3.3→1.3.4 |
 
 ### システム側 (consumer) への反映
 
