@@ -1,12 +1,13 @@
 # agent-skills-catalog
 
-AI エージェント (Anthropic Managed Agents 形式) で使う skill カタログ。サイトの原稿執筆・画像配置などを体系化した skill を収録する。
+AI エージェント (Anthropic Managed Agents 形式) で使う skill カタログ。サイトの原稿執筆・画像配置・和文組版などを体系化した skill を収録する。
 
 ## 含まれる skill
 
 | skill | 説明 |
 |---|---|
 | [`content-production`](catalog/content-production/SKILL.md) | サイトの原稿執筆・画像配置 (TOP/下層/事例/FAQ/SEO 記事) |
+| [`jp-typography`](catalog/jp-typography/SKILL.md) | 和文サイトの組版規約 (改行崩れ・語割れの生成時予防) |
 
 ## 使い方 (git dependency として取り込む)
 
