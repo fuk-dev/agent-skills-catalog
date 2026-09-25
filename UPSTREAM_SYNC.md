@@ -14,6 +14,7 @@
 - **Last synced from**: v1.3.4 (2026-08-13, SHA `f64c4084` = 予約ページの path を予約語化 / `/reservations/` 使用禁止。upstream PR #258)
 - **Synced at**: 2026-08-13
 - **前回**: v1.3.3 (2026-07-24, SHA `21234deb` = Content Collections の Astro 5 glob loader 正典化) / synced at 2026-07-27
+- **最終確認**: 2026-09-25 に upstream `3d47a80a` まで確認。`skills/content-production/` への変更は 0 件 (無変更)
 - **Tracking source**: 上記 git repo (2026-07-03 に zip 配布から切替済)
 
 ### 系統ズレメモ (履歴)
@@ -160,8 +161,95 @@ MA スコープ = **制作時のみ** (公開後の継続運用は対象外) の
 | 2026-07-27 | `21234deb` | v1.3.3 | upstream の Content Collections Astro 5 正典化を同期。SKILL.md のみ (upstream 差分も SKILL.md 1 ファイル)。「標準構成」の原稿フォーマットを `src/content/config.ts` → `src/content.config.ts` + `glob()` loader 方式へ、禁止事項に項目11 (レガシー記法 `type: 'content'` / `type: 'data'` 前提の納品・実装指定を禁止。理由: Astro 5 では entry `id` に拡張子が残り `.md` 付き URL → 404) を追加。upstream 併記の実装側正本パス (`astro-base-theme/.../part-0-common-spec.md` 0-9) は rule D で除外し規範本体のみ保持。**併せて fork 内の残存 2 件を掃除**: SKILL.md の `300dpi` → Web 前提のピクセル基準、`ai-image-prompt-library.md` の「実写撮影かプロのイラストレーター」→ メディアライブラリ参照 + ユーザー依頼で停止 (いずれも旧 rule C の無条件維持で残っていた分)。取り込み手順に step 0 (本 repo の最新化) を新設し、step 1/3 を read-only 参照・選択コピーに改訂 |
 | 2026-07-17 | `5119a937` | v1.3.2 | upstream の名称統一追い掃除 (旧称「医療広告ガイドライン」→「医療広告等ガイドライン」) を同期。`references/writing-process.md` / `templates/ai-image-prompt-library.md` の各1箇所。名称のみで挙動不変。upstream で対象の `case-consent-form.md` は fork で削除済 (rule A)、`_design-notes.md` / `evals/` は fork 非収録のため対象外。SKILL.md version 1.3.1→1.3.2 |
 | 2026-08-13 | `f64c4084` | v1.3.4 | upstream PR #258「予約ページの path を予約語化」を同期。SKILL.md のみ。禁止事項に項目12 (`src/pages/reservations/` にページを置かない。`/reservations/` と `/reservations/<slug>` の URL は使わない。代替は `/reserve/`) を追加し、必須ページに「予約」を含む業種 (restaurant / salon / hospitality) の配置先も `/reserve/` に統一。upstream 併記の実装側正本パス (`astro-base-theme/.../part-0-common-spec.md` 0-9) は rule D で除外し規範本体のみ保持 (項目9・11 と同じ扱い)。SKILL.md version 1.3.3→1.3.4 |
+| 2026-09-25 | `3d47a80a` (確認のみ) | v1.3.4 | **content-production は無変更**。upstream の差分は新規 skill 3 本 (`hp-audit` / `jp-typography` / `design-audit`) と astro 系 skill の改修のみ。本 sync では `jp-typography` の予防部分を新規採用 (下記 `## jp-typography` 参照)、`hp-audit` / `design-audit` は不採用 (下記 `## 新規 skill の採用判定` 参照) |
 
-### システム側 (consumer) への反映
+---
+
+## `jp-typography`
+
+### Source
+
+- **Origin**: `github.com/jirhigashi-sketch/claude-skills-repo` — `skills/jp-typography/` (mainline: `origin/main`)
+- **Last synced from**: v1.4.1 (2026-09-24, SHA `2a5f35e1`。upstream PR #272「納品前検査 4 段」で追加)
+- **Synced at**: 2026-09-25 (fork 初版)
+- **Tracking source**: 上記 git repo
+
+### 採用の方針: 予防だけを抽出する
+
+upstream の `jp-typography` は **予防 (生成時規約) / 検出 (ヘッドレスブラウザ走査) / 往復の進め方** が
+1 skill に同居している。Playwright が使えるローカル Claude Code では 1 本で検査ループ全体を回せる合理的な
+設計だが、**MA には Playwright を持ち込まない方針**のため、予防部分だけを抽出して収録する。
+
+抽出が容易だったのは upstream 側が `references/rules.md` (予防) と `references/detect.md` (検出) を
+**ファイル単位で分離**していたため。この分離は upstream の設計上の美点であり、追随時も同じ境界を使う。
+
+### 収録するもの / しないもの
+
+| upstream のファイル | 扱い | 理由 |
+|---|---|---|
+| `references/rules.md` | ✅ 採用 (rule D 適用) | 生成時規約 A〜F。browser 依存なしの craft |
+| `references/fix-patterns.md` | ✅ 採用 (rule D 適用) | 手法 0〜7 の実装レシピ (CSS / Astro / Tailwind)。`rules.md` から参照されており、落とすと存在しないパス参照が残る |
+| `references/detect.md` | ❌ 不採用 | ヘッドレスブラウザ + Range API による行単位走査。MA に Playwright を入れない方針 |
+| `SKILL.md` | ❌ 流用しない (fork 側で新規書き下ろし) | upstream の SKILL.md は検出フローが主動線。予防に絞った本文を fork 側で書く |
+
+### 適用した削除ルール
+
+#### A. `references/rules.md` の編集
+
+| 対象 | 対処 | 理由 |
+|---|---|---|
+| E17「ビルド後の HTML を機械的に走査する」 | **リフレーム** → 「生成した文面・マークアップを出力後に自分で確認する」。3 つの観点は保持し、テキスト検索で足りるもの / 実描画が必要なものを区別し、後者は A〜C の予防で潰す方針を明記 | 走査ツール (`detect.md`) 前提。観点自体は craft なので破棄せず抽象化 |
+| F20「着手時に『確認先』を握る」 | **削除** | 「確認は localhost、公開反映はデプロイ後」を人間と取り決める運用。agent 実行不可 |
+| F21「物理的に不可能な指定は実測値で説明する」→ 承認を取る | **削除** (規範は `fix-patterns.md` §7 に残るため重複) | 承認取りの人間フロー |
+
+A〜D (割ってはいけない語 / 改行と行数 / レイアウト / 文章の書き方) と E15・E16・F18・F19 は
+**全て craft として保持**。特に F18「指摘が1件でも全ページを走査してから一括で直す」は
+agent の部分最適を防ぐ規範として価値が高い。
+
+#### D. `references/fix-patterns.md` の agent-safe 化
+
+| 箇所 | 対処 | 理由 |
+|---|---|---|
+| `detect.md` への参照 3 箇所 (`0.4` 静的走査 / `until` のレイアウト走査 / `.jp-fixed-lines` の文字幅実測) | 汎用化 (「ビルド後の HTML をテキスト検索」「上表を既定として使う」「和文 1 文字 ≒ font-size と見積もる」) | fork 非収録ファイルへのパス参照 |
+| `scripts/jp-compounds.mjs` のコメント「検出と修正でこの1ファイルを共有する」 | 「複合辞のリストは 1 ファイルに集約する」に変更 | 検出を収録しないため前提が崩れる。ファイル自体はテナントサイト側に作る実装指示なので保持 |
+| §7「収まらないときの扱い」の「承認を取る」「承認済み文言」「実測値で説明する」 | 主体を明示してリフレーム (「ユーザーに選んでもらう」「ユーザーが決めた文言を断りなく削らない」「幅と文字数の見積もりを添えて説明する」) | MA agent はテナントユーザーと対話するため確認自体は実行可。ただし実描画の実測は前提にできない |
+
+### 取り込み手順
+
+`content-production` と同じ (step 0〜4)。ただし `references/detect.md` と `scripts/` は
+**コピー対象外**。sweep には Playwright / 監査系 skill 名も加える:
+
+```bash
+grep -rniE "playwright|detect\.md|hp-audit|design-audit|astro-theme-audit|承認を取|確認先|台帳|キャリブレーション" catalog/jp-typography/
+```
+
+### Sync 履歴
+
+| Synced at | upstream SHA | upstream version | 備考 |
+|---|---|---|---|
+| 2026-09-25 | `2a5f35e1` | v1.4.1 | fork 初版。`rules.md` / `fix-patterns.md` を採用し rule A/D を適用。`detect.md` ・`scripts/` は不採用、SKILL.md は fork 側で新規書き下ろし (予防に絞る) |
+
+---
+
+## 新規 skill の採用判定 (upstream に追加された skill)
+
+upstream に skill が追加されたときの判定記録。**不採用の理由も残す** (次回 sync で同じ調査を繰り返さないため)。
+
+### 2026-09-24 upstream PR #272「納品前検査 4 段」 — 3 本追加
+
+| skill | 判定 | 理由 |
+|---|---|---|
+| `jp-typography` v1.4.1 | ✅ **部分採用** | 予防 (生成時規約) だけを抽出。上記 `## jp-typography` 参照 |
+| `hp-audit` v1.0.0 | ❌ **不採用** | 検査器が **skill の外** (`packages/hp-audit/`) にあり、skill ディレクトリとして自己完結しない (agentskills.io の前提から外れる)。検査本体は Chromium / WebKit / Firefox の 3 ブラウザ実測。`audit.config.json` を案件側に置く運用と、`jp-typography → design-audit → astro-theme-audit` への受け渡しチェーンが構造に組み込まれている |
+| `design-audit` v1.19.0 | ❌ **不採用** | Playwright で 360〜1440px × Chromium/WebKit の実測が前提。加えて Producer 免除 (waiver)・案件別台帳/中央台帳への記録・キャリブレーション再校正という**人手運用**が設計の中核 (guide 分類1)。※ `references/design-principles.md` (タイポグラフィ / カラー / 余白 / 整列 / 一貫性 / レスポンシブ / ビジュアル素材の原則集) は **browser 依存なしの craft** なので、将来デザイン系 skill を作るときの採用候補として記録しておく |
+
+**判定の物差し**: MA に Playwright を持ち込まない方針のため、**実描画の計測を主動線とする skill は
+不採用**。ただし内部に browser 非依存の craft (原則集・生成時規約) を持つ場合は、その部分だけの
+抽出を検討する (`jp-typography` がその適用例)。
+
+---
+
+## システム側 (consumer) への反映
 
 取り込み PR を main に merge した後、consumer 側 (fuk-ai-platform 等) で:
 
